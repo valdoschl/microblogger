@@ -19,13 +19,7 @@ export default class Posts extends Component {
     } */
 
     componentDidMount = () => {
-        axios.get('/posts')
-        .then(res => {
-            this.setState({
-                posts: res.data,
-                user: this.props.user
-            })
-        })
+        this.getPosts()
     }
 
     postList() {
@@ -39,26 +33,28 @@ export default class Posts extends Component {
         })
     }
 
-    
+    getPosts = () => {
+        axios.get('/posts')
+        .then(res => {
+            this.setState({
+                posts: res.data,
+                user: this.props.user
+            })
+        })
+    }
 
-    submitPost() {
+    submitPost = () => {
         const post = document.getElementById("blog-post").value
-        let posts = [...this.state.posts]
         const user = this.state.user
         if(post.length <= postMaxLength) {
-            //add to db
             const newBlogPost = {
-                post,
-                poster: user
+                poster:user,
+                post
             }
             axios.post('/posts/add', newBlogPost)
-            .then(res => {posts.unshift({
-                    poster: user,
-                    post
-                })
-                this.setState({posts})})
+            .then(this.getPosts())
             .catch(err => console.log(err))
-            //update state
+            
             
             document.getElementById("blog-post").value = ''
         } else {

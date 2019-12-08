@@ -13,8 +13,9 @@ const postSchema = new Schema({
         required: true,
         minlength: 2,
         maxlength: 250
-    }
-})
+    }}, {
+        timestamps: true
+    })
 
 const BlogPost = mongoose.model('BlogPost', postSchema)
 

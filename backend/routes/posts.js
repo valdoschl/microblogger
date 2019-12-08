@@ -4,7 +4,7 @@ let BlogPost = require('../models/post-model')
 const router = express.Router()
 
 router.route('/').get((req,res) => {
-    BlogPost.find()
+    BlogPost.find().sort({'_id':-1})
     .then(posts => res.json(posts))
     .catch(err => res.status(400).json(err))  
 })

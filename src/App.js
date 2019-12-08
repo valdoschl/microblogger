@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Redirect} from 'react-router-dom'
 import {Route} from 'react-router'
-import './styles/posts.css'
+
 
 import Posts from './components/posts-component'
 import Login from './components/login-component'
@@ -9,7 +9,8 @@ import Login from './components/login-component'
 
 export default class App extends Component {
   state = {
-    isLogged: true
+    isLogged: false,
+    user: ''
   }
 
   redirectToLogin = () => {
@@ -18,15 +19,24 @@ export default class App extends Component {
     }
   }
 
-  
+  login = (user) => {
+    this.setState({
+      isLogged: true,
+      user
+    })
+  }
   
   render() {
       return (
           <Router>
             <div className="container">
               {this.redirectToLogin()}
-              <Route path="/" exact component={Posts} />
-              <Route path="/login" component={Login} />
+              <Route exact path="/" render={
+                (routeProps) => (<Posts {...routeProps} user={this.state.user} />)
+              } />
+              <Route path="/login" render={
+                (routeProps) => (<Login {...routeProps} login={this.login} isLogged={this.state.isLogged} />)
+              } />
             </div>
           </Router>
       )

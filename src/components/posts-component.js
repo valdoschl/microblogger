@@ -1,45 +1,37 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 
 const postMaxLength = 250
-//Temporary hard coded posts
-let posts = [
-    {
-        poster: 'pekka',
-        post: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil ducimus facere, dolorem eius, distinctio repudiandae consequuntur sapiente a neque ex rerum animi! Nihil error molestiae quod inventore non aspernatur iure!'
-    },
-    {
-        poster: 'pe123kka',
-        post: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil ducimus facere, dolorem eius, distinctio repudiandae consequuntur sapiente a neque ex rerum animi! Nihil error molestiae quod inventore non aspernatur iure!'
-    },
-    {
-        poster: 'pe11kka',
-        post: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil ducimus facere, dolorem eius, distinctio repudiandae consequuntur sapiente a neque ex rerum animi! Nihil error molestiae quod inventore non aspernatur iure!Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil ducimus facere, dolorem eius, distinctio repudiandae consequuntur sapiente a neque ex rerum animi! Nihil error molestiae quod inventore non aspernatur iure!'
-    },
-    {
-        poster: 'pek2sdfgsdgka',
-        post: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil ducimus facere, dolorem eius, distinctio repudiandae consequuntur sapiente a neque ex rerum animi! Nihil error molestiae quod inventore non aspernatur iure!'
-    },
-    {
-        poster: 'pe333kka',
-        post: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil ducimus facere, dolorem eius, distinctio repudiandae consequuntur sapiente a neque ex rerum animi! Nihil error molestiae quod inventore non aspernatur iure!'
-    },
-]
 
-//Temporary hard coded current user
-const user = 'PekkaXD'
+
 
 
 export default class Posts extends Component {
-    state = {
-        posts: posts
+    constructor(props) {
+        super(props)
+
+        this.state = {posts:[]}
+    }
+
+    /* state = {
+        posts: []
+    } */
+
+    componentDidMount = () => {
+        axios.get('/posts')
+        .then(res => {
+            this.setState({
+                posts: res.data,
+                user: this.props.user
+            })
+        })
     }
 
     postList() {
-        return posts.map(post => {
-            console.log(post)
+        return this.state.posts.map(post => {
             return (
-                <div>
+                <div key={post._id}>
                     <h2>{post.poster}</h2>
                     <p>{post.post}</p>
                 </div>
@@ -47,14 +39,27 @@ export default class Posts extends Component {
         })
     }
 
+    
+
     submitPost() {
         const post = document.getElementById("blog-post").value
+        let posts = [...this.state.posts]
+        const user = this.state.user
         if(post.length <= postMaxLength) {
-            posts.unshift({
-                poster: user,
-                post
-            })
-            this.setState({posts})
+            //add to db
+            const newBlogPost = {
+                post,
+                poster: user
+            }
+            axios.post('/posts/add', newBlogPost)
+            .then(res => {posts.unshift({
+                    poster: user,
+                    post
+                })
+                this.setState({posts})})
+            .catch(err => console.log(err))
+            //update state
+            
             document.getElementById("blog-post").value = ''
         } else {
             alert('too long')

@@ -11,8 +11,7 @@ const postSchema = new Schema({
     post: {
         type: String,
         required: true,
-        minlength: 2,
-        maxlength: 250
+        maxlength: 500
     }}, {
         timestamps: true
     })

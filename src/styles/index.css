@@ -58,7 +58,7 @@ textarea {
     resize: none;
 }
 
-input[type=submit] {
+#post-button {
     margin: 2%;
     margin-left: 85%;
     margin-top: 10px;
@@ -96,4 +96,87 @@ input[type=submit] {
 #posts > div > p{
     margin: 3%;
     color: #BABABA
+}
+
+#login-register {
+    height: 10em;
+    position: relative
+}
+
+#login-register > #login {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+#login-register > #register {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+#login-register  input[type=text]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #27B9C3;
+    background-color: rgba(0, 0, 0, 0.0);
+    outline: none;
+  }
+  input[type=text]:focus {
+    background-color: rgba(0, 0, 0, 0.0);
+  }
+#login-register  input[type=password]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #27B9C3;
+    background-color: rgba(0, 0, 0, 0.0);
+    outline: none;
+  }
+#login-register  input[type=submit]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    background-color: #27B9C3
+  }
+
+  #login-register > a {
+    margin: 0;
+    position: absolute;
+    top: 130%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+  #login-register > p {
+    margin: 0;
+    position: absolute;
+    top: 150%;
+    left: 50%;
+    color: red;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+input {
+    color: #BABABA;
+}
+
+#post-blog > p {
+    margin: 2%;
+    margin-left: 2%;
+    margin-top: 30px;
+    color: red;
 }

@@ -4,9 +4,9 @@ import axios from 'axios'
 
 
 export default class Login extends Component {
-    /* constructor(props) {
-        super(props)
-    } */
+    state = {
+        errorMsg: ''
+    }
 
     login = (e) => {
         e.preventDefault()
@@ -19,27 +19,21 @@ export default class Login extends Component {
                 if (password === user[0].password) {
                     this.props.login(username)
                 } else {
-                    alert('Wrong password')
+                    this.setState({
+                        errorMsg: 'Wrong password'
+                    })
                 }
             } else {
-                alert('account not found')
+                this.setState({
+                    errorMsg: 'account not found'
+                })
             }
         })
     }
 
-    register = (e) => {
-        e.preventDefault()
-        const username = document.querySelector('input[name=registerName]').value
-        const password = document.querySelector('input[name=registerPass]').value
-        if (4 <= username.length && username.length<= 20) {
-            if (4 <= password.length && password.length <= 20) {
-                axios.post('/users/add',{username,password})
-                .then(() => alert('user created'))
-            } else {
-                alert('Password must be 4-20 characters')
-            }
-        } else {
-            alert('Username must be 4-20 characters')
+    renderErrorMessage() {
+        if(this.state.errorMsg.length > 0) {
+            return <p>{this.state.errorMsg}</p>
         }
     }
 
@@ -49,35 +43,19 @@ export default class Login extends Component {
         }
     }
    
-
-
     render() {
         return (
-            <div className="middle-content">
+            <div id="login-register">
                 {this.redirectToMain()}
-                <form onSubmit={this.login} >
-                    username:
+                <form id="login" onSubmit={this.login} >
+                    <input type="text" name="username" placeholder="username"/>
                     <br/>
-                    <input type="text" name="username"/>
-                    <br/>
-                    password:
-                    <br/>
-                    <input type="password" name="password"/>
+                    <input type="password" name="password" placeholder="password"/>
                     <br/>
                     <input type="submit" value="login"/>
                 </form>
-                <h2>register</h2>
-                <form onSubmit={this.register}>
-                    username:
-                    <br/>
-                    <input type="text" name="registerName"/>
-                    <br/>
-                    password:
-                    <br/>
-                    <input type="password" name="registerPass"/>
-                    <br/>
-                    <input type="submit" value="register"/>
-                </form>
+                <a href="/register">Click here to register</a>
+                {this.renderErrorMessage()}
             </div>
         )
     }

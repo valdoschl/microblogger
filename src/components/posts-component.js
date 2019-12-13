@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 
-const postMaxLength = 250
+const postMaxLength = 500
 
 
 
@@ -11,12 +11,8 @@ export default class Posts extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {posts:[]}
+        this.state = {posts:[],error:false,curPost:''}
     }
-
-    /* state = {
-        posts: []
-    } */
 
     componentDidMount = () => {
         this.getPosts()
@@ -46,7 +42,10 @@ export default class Posts extends Component {
     submitPost = () => {
         const post = document.getElementById("blog-post").value
         const user = this.state.user
-        if(post.length <= postMaxLength) {
+        if(post.length <= postMaxLength && post.length > 0) {
+            this.setState({
+                error: false
+            })
             const newBlogPost = {
                 poster:user,
                 post
@@ -58,7 +57,16 @@ export default class Posts extends Component {
             
             document.getElementById("blog-post").value = ''
         } else {
-            alert('too long')
+            this.setState({
+                error: true,
+                curPost: post
+            })
+        }
+    }
+
+    renderErrorMessage() {
+        if(this.state.error) {
+            return <p>post must be 1-500 characters, your post is {this.state.curPost.length} characters long</p>
         }
     }
 
@@ -72,7 +80,8 @@ export default class Posts extends Component {
                 </a>
                 <div id="post-blog">
                     <textarea id="blog-post" placeholder="write a microblog"></textarea>
-                    <input type="submit" value="post" onClick={() => this.submitPost()} />
+                    {this.renderErrorMessage()}
+                    <input id="post-button" type="submit" value="post" onClick={() => this.submitPost()} />
                 </div>
                 <div id="posts">
                     {this.postList()}
